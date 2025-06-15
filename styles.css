@@ -1,0 +1,264 @@
+
+  #mapa {
+    width: 100%;
+    height: 70vh; 
+    margin-top: 1rem;
+    border: 2px solid #00755c;
+    border-radius: 8px;
+  }
+  section {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  }
+  label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    min-width: 150px;
+  }
+
+
+  /* Reset básico (HOME)*/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffd7e0;
+  color: #333;
+  line-height: 1.6;
+}
+
+.logo {
+    width: 300px;
+    height: 150px;
+  }
+
+header {
+  background-color: #002e34;
+  color: #90ff17;
+  text-align: center;
+  padding: 2rem;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1.2rem;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: #00755c;
+  padding: 1rem 0;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 1rem;
+  font-size: 1.1rem;
+  
+}
+
+nav a:hover {
+  color: white;
+}
+
+main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+section h2 {
+  font-size: 2rem;
+  color: #00755c;
+  margin-bottom: 1rem;
+}
+
+section ul {
+  list-style: disc;
+  margin-left: 2rem;
+}
+
+section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  color: #00755c;
+  padding: 1rem;
+}
+
+.card p {
+  padding: 0 1rem 1rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.tips {
+  background-color: #e9f5e1;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.tips ul {
+  list-style: square;
+  margin-left: 2rem;
+}
+
+.tips ul li {
+  margin-bottom: 0.5rem;
+}
+
+footer {
+  background-color: #004443;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+/* style (FORUM)*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 1rem;
+    background: #f9f9f9;
+  }
+  nav a {
+    margin-right: 1rem;
+    text-decoration: none;
+    color: #90ff17;
+    font-weight: bold;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  #forum {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: #e9f5e1;
+    padding: 1rem 2rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  }
+  label {
+    font-weight: bold;
+    margin-top: 1rem;
+    display: block;
+  }
+  input[type="text"], select, textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.2rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    resize: vertical;
+  }
+  button {
+    margin-top: 1rem;
+    background-color: #357c29;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #357c29;
+  }
+  #mensagens {
+    margin-top: 2rem;
+  }
+  .post {
+    background: #e9f5e1;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px #a4cbb8;
+  }
+  .post strong {
+    color: #357c29;
+  }
+  .post small {
+    color: #666;
+  }
+
+  button {
+    margin: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  button:active {
+    transform: scale(0.98);
+  }
+
+  .reacoes {
+    margin-top: 10px;
+  }
+  
+  .reacoes button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .reacoes button span {
+    margin-left: 5px;
+  }

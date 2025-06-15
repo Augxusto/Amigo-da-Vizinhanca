@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Amigo da Vizinhança</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="script.js" defer></script>
+  <style>
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="forum.html">Forum</a>
+  </nav>
+
+  <section id="forum">
+    <h2>Fórum - Mensagens da Comunidade</h2>
+    <label for="nomeUsuario">Nome:</label>
+    <input type="text" id="nomeUsuario" />
+    <label for="bairro">Bairro:</label>
+    <select id="bairro">
+      <option value="centro">Centro</option>
+      <option value="zona_norte">Zona Norte</option>
+      <option value="zona_sul">Zona Sul</option>
+      <option value="zona_oeste">Zona Oeste</option>
+      <option value="zona_leste">Zona Leste</option>
+    </select>
+    <label for="mensagem">Mensagem:</label>
+    <textarea id="mensagem" rows="4" cols="50"></textarea>
+    <button id="btnPublicar">Publicar</button>
+
+    <div id="mensagens"></div>
+  </section>
+
+  <script>
+  document.getElementById("btnPublicar").addEventListener("click", () => {
+    const nome = document.getElementById("nomeUsuario").value.trim();
+    const bairro = document.getElementById("bairro").value;
+    const mensagem = document.getElementById("mensagem").value.trim();
+
+    if (!nome || !mensagem) {
+      alert("Por favor, preencha seu nome e a mensagem.");
+      return;
+    }
+
+    const post = {
+      id: Date.now(),
+      nome,
+      bairro,
+      mensagem,
+      data: new Date().toLocaleString(),
+      likes: 0,
+      dislikes: 0
+    };
+
+    let mensagensSalvas = JSON.parse(localStorage.getItem("mensagens")) || [];
+    mensagensSalvas.push(post);
+    localStorage.setItem("mensagens", JSON.stringify(mensagensSalvas));
+
+    exibirMensagens();
+
+    document.getElementById("nomeUsuario").value = "";
+    document.getElementById("mensagem").value = "";
+  });
+
+  function exibirMensagens() {
+    const container = document.getElementById("mensagens");
+    let mensagensSalvas = JSON.parse(localStorage.getItem("mensagens")) || [];
+    container.innerHTML = "";
+
+    mensagensSalvas.slice().reverse().forEach((post) => {
+      const div = document.createElement("div");
+      div.className = "post";
+      div.innerHTML = `
+        <strong>${post.nome}</strong> (${post.bairro})<br />
+        <small>${post.data}</small>
+        <p>${post.mensagem}</p>
+        <div class="reacoes">
+          <button class="like-btn" data-id="${post.id}">👍 <span>${post.likes}</span></button>
+          <button class="dislike-btn" data-id="${post.id}">👎 <span>${post.dislikes}</span></button>
+          <button class="delete-btn" data-id="${post.id}">🗑️ Excluir</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+
+    adicionarEventosBotoes();
+  }
+
+  function adicionarEventosBotoes() {
+    document.querySelectorAll(".like-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        const votos = JSON.parse(localStorage.getItem("votos")) || {};
+        let mensagensSalvas = JSON.parse(localStorage.getItem("mensagens")) || [];
+
+        const postIndex = mensagensSalvas.findIndex((post) => post.id == id);
+        if (postIndex === -1) return;
+
+        const post = mensagensSalvas[postIndex];
+        const votoAnterior = votos[id];
+
+        if (votoAnterior === "like") {
+          post.likes -= 1;
+          delete votos[id];
+        } else if (votoAnterior === "dislike") {
+          post.dislikes -= 1;
+          post.likes += 1;
+          votos[id] = "like";
+        } else {
+          post.likes += 1;
+          votos[id] = "like";
+        }
+
+        mensagensSalvas[postIndex] = post;
+        localStorage.setItem("mensagens", JSON.stringify(mensagensSalvas));
+        localStorage.setItem("votos", JSON.stringify(votos));
+        exibirMensagens();
+      });
+    });
+
+    document.querySelectorAll(".dislike-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        const votos = JSON.parse(localStorage.getItem("votos")) || {};
+        let mensagensSalvas = JSON.parse(localStorage.getItem("mensagens")) || [];
+
+        const postIndex = mensagensSalvas.findIndex((post) => post.id == id);
+        if (postIndex === -1) return;
+
+        const post = mensagensSalvas[postIndex];
+        const votoAnterior = votos[id];
+
+        if (votoAnterior === "dislike") {
+          post.dislikes -= 1;
+          delete votos[id];
+        } else if (votoAnterior === "like") {
+          post.likes -= 1;
+          post.dislikes += 1;
+          votos[id] = "dislike";
+        } else {
+          post.dislikes += 1;
+          votos[id] = "dislike";
+        }
+
+        mensagensSalvas[postIndex] = post;
+        localStorage.setItem("mensagens", JSON.stringify(mensagensSalvas));
+        localStorage.setItem("votos", JSON.stringify(votos));
+        exibirMensagens();
+      });
+    });
+
+    document.querySelectorAll(".delete-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        let mensagensSalvas = JSON.parse(localStorage.getItem("mensagens")) || [];
+        mensagensSalvas = mensagensSalvas.filter((post) => post.id != id);
+        localStorage.setItem("mensagens", JSON.stringify(mensagensSalvas));
+
+        const votos = JSON.parse(localStorage.getItem("votos")) || {};
+        delete votos[id];
+        localStorage.setItem("votos", JSON.stringify(votos));
+
+        exibirMensagens();
+      });
+    });
+  }
+
+  window.onload = exibirMensagens;
+  </script>
+</body>
+</html>

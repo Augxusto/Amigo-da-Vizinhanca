@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Separe Corretamente, Recicle Melhor</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+  
+  <script src="script.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="forum.html">Forum</a>
+  </nav>
+
+  <section id="resultados">
+    <h2>MAPA</h2>
+    
+
+    <h3>Mapa de Pontos de Coleta</h3>
+
+    <div id="mapa"></div>
+  </section>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Pontos de coleta e mapa
+  const pontosColeta = [
+    { lat: -23.4265, lon: -51.936, descricao: "Ponto de coleta - Av. Paraná, 321" },
+    { lat: -23.428, lon: -51.94, descricao: "Ponto de coleta - Av. Brasil, 456" },
+    { lat: -23.437, lon: -51.945, descricao: "Ponto de coleta - Rua das Palmeiras, 1234" },
+    { lat: -23.45, lon: -51.94, descricao: "Ponto de coleta - Rua Vitória, 202" },
+    { lat: -23.455, lon: -51.942, descricao: "Ponto de coleta - Av. Colombo, 1500" },
+    { lat: -23.46, lon: -51.95, descricao: "Ponto de coleta - Rua Imigrantes, 234" },
+    { lat: -23.431, lon: -51.935, descricao: "Ponto de coleta - Rua das Flores, 789" },
+    { lat: -23.44, lon: -51.93, badescricao: "Ponto de coleta - Av. Laguna, 567" },
+    { lat: -23.415, lon: -51.95, descricao: "Ponto de coleta - Rua Campo Belo, 1001" },
+    { lat: -23.412, lon: -51.955, descricao: "Ponto de coleta - Rua Pioneira, 102" },
+    { lat: -23.445, lon: -51.955, descricao: "Ponto de coleta - Av. Industrial, 500" },
+    { lat: -23.417, lon: -51.925, descricao: "Ponto de coleta - Rua Aurora, 321" },
+    { lat: -23.42, lon: -51.922, descricao: "Ponto de coleta - Av. São Paulo, 999" },
+    { lat: -23.41, lon: -51.92, descricao: "Ponto de coleta - Rua Estrela, 101" },
+    { lat: -23.425, lon: -51.95, descricao: "Ponto de coleta - Praça Central, 1" },
+    { lat: -23.435, lon: -51.925, descricao: "Ponto de coleta - Av. das Nações, 303" },
+    { lat: -23.4378, lon: -51.9425, descricao: "Ponto de coleta - Av. Kakogawa, 200" },
+    { lat: -23.4265, lon: -51.936, descricao: "Ponto de coleta - Av. Paraná, 321" },
+    { lat: -23.428, lon: -51.94, descricao: "Ponto de coleta - Av. Brasil, 456" },
+    { lat: -23.387336, lon: -51.931052, descricao: "Ponto de coleta - Av. Kakogawa, 809" },
+    { lat: -23.387958, lon: -51.930408, descricao: "Ponto de coleta - Av. Kakogawa, 706" },
+    { lat: -23.375287, lon: -51.936421, descricao: "Ponto de coleta - Av. Kakogawa, 2072" },
+    { lat: -23.4000, lon: -51.9200, descricao: "Ponto de coleta - Rua Exemplo Norte, 123" },
+    { lat: -23.3950, lon: -51.9150, descricao: "Ponto de coleta - Av. Exemplo Norte, 456" },
+    { lat: -23.3900, lon: -51.9100, descricao: "Ponto de coleta - Praça Exemplo Norte, 789" }
+];
+
+
+  let marcadores = [];
+
+  const mapa = L.map("mapa").setView([-23.4273, -51.9375], 13);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors",
+  }).addTo(mapa);
+
+  function carregarPontos(filtro = "todos") {
+    marcadores.forEach((m) => mapa.removeLayer(m));
+    marcadores = [];
+
+    pontosColeta.forEach((ponto) => {
+      if (filtro === "todos" || ponto.bairro === filtro) {
+        const marcador = L.marker([ponto.lat, ponto.lon])
+          .addTo(mapa)
+          .bindPopup(ponto.descricao);
+        marcadores.push(marcador);
+      }
+    });
+  }
+
+  function filtrarPontos() {
+    const filtro = document.getElementById("filtroBairro").value;
+    carregarPontos(filtro);
+  }
+
+  // Geolocalização do usuário
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (pos) {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        const iconeUsuario = L.icon({
+          iconUrl: "https://cdn-icons-png.flaticon.com/512/1673/1673188.png",
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32],
+        });
+
+        L.marker([lat, lon], { icon: iconeUsuario })
+          .addTo(mapa)
+          .bindPopup("Você está aqui!")
+          .openPopup();
+
+        mapa.setView([lat, lon], 15);
+      },
+      function () {
+        alert("Não foi possível obter sua localização.");
+      }
+    );
+  } else {
+    alert("Geolocalização não é suportada neste navegador.");
+  }
+
+  carregarPontos();
+  </script>
+</body>
+</html>

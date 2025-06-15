@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="Logo do projeto" width="200"/>
+  <img src="/AEP/logo.png" alt="Logo do projeto" width="200"/>
 </p>
 
 <h1 align="center"> Amigo da Vizinhança </h1>

@@ -20,4 +20,4 @@ O projeto **Amigo da Vizinhança** é uma iniciativa que busca melhorar a coleta
 A proposta busca tornar a cidade mais limpa, ecológica e tecnológica, com potencial para ser replicada em outras localidades e evoluir com novas funcionalidades.
 
 ---
-**Desenvolvido como parte da AEP 4º Semestre - UniCesumar.**
+**Desenvolvido como parte da AEP 3º Semestre - UniCesumar.**
